@@ -59,7 +59,7 @@ PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebReq
 ## Windows
 ```{powershell}
 
-$env:PYTHONVERSIONPS = 3.11; $env:DEVELOPERMODEPS = 1; $env:remote = philipnickel; $env:branch = windows_devided; PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/windows_devided/AutoInstallWindows.ps1' -UseBasicParsing).Content}"
+$env:PS_PYTHONVERSION = 3.11; $env:PS_DEVELOPERMODE = 1; $env:PS_remote = philipnickel; $env:PS_branch = windows_devided; PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri \"https://raw.githubusercontent.com/$remote/pythonsupport-scripts/$branch/AutoInstallWindows.ps1\" -UseBasicParsing).Content}"
 ```}
 
 

@@ -2,7 +2,7 @@
 # if 1 set path_temp to 'philipnickel' otherwise set path_temp to 'dtudk'
 
 
-$developerPath =  "https://raw.githubusercontent.com/$remote/pythonsupport-scripts/$branch/Windows_auto_python.ps1"
+$developerPath =  "https://raw.githubusercontent.com/$PS_remote/pythonsupport-scripts/$PS_branch/Windows_auto_python.ps1"
 
 
 $productionPath =  "https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/main/Windows_auto_python.ps1"
