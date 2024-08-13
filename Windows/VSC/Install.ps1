@@ -1,3 +1,4 @@
+
 # Function to refresh environment variables in the current session
 function Refresh-Env {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
