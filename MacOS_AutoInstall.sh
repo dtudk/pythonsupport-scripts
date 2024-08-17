@@ -19,6 +19,3 @@ echo "URL set before curling sub-scripts $url_ps"
 # install python
 /bin/bash -c "$(curl -fsSL $url_ps/Python/Install.sh)"
 
-# install vscode
-/bin/bash -c "$(curl -fsSL $url_ps/VSC/Install.sh)"
-
