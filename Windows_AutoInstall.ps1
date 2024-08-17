@@ -7,19 +7,14 @@ if (-not $env:BRANCH_PS) {
 }
 
 
-$url_ps =  "https://raw.githubusercontent.com/$env:REMOTE_PS/$env:BRANCH_PS/Windows"
+$url_ps =  "https://raw.githubusercontent.com/$env:REMOTE_PS/$env:BRANCH_PS"
 
 
 Write-Output "Path before invoking webrequests: $url_ps"
 
 
-Write-Output "Running Windows_python.ps1"
-# link to full python installation 
-PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/Python/Install.ps1' -UseBasicParsing).Content}"
+# link to placeholder script 
+PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/Windows_placeholder.ps1' -UseBasicParsing).Content}"
 
-
-Write-Output "Running Windows_VSC.ps1"
-# link to full VSC installation
-PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/VSC/Install.ps1' -UseBasicParsing).Content}"
 
 
