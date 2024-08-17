@@ -10,15 +10,13 @@ export REMOTE_PS
 export BRANCH_PS
 
 # set URL
-url_ps="https://raw.githubusercontent.com/$REMOTE_PS/$BRANCH_PS/MacOS"
+url_ps="https://raw.githubusercontent.com/$REMOTE_PS/$BRANCH_PS"
 
 # echo url for debugging
 echo "URL set before curling sub-scripts $url_ps"
 
 
-# install python
-/bin/bash -c "$(curl -fsSL $url_ps/Python/Install.sh)"
+# runs placeholder 
+/bin/bash -c "$(curl -fsSL $url_ps/MacOS_placeholder.sh)"
 
-# install vscode
-/bin/bash -c "$(curl -fsSL $url_ps/VSC/Install.sh)"
 
