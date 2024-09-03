@@ -1,4 +1,3 @@
-
 # check for env variable PYTHONVERSIONPS 
 # if it isn't set set it to 3.11
 
@@ -54,6 +53,13 @@ $anacondaPath2 = "C:\ProgramData\Anaconda3"
 if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $anacondaPath1) -or (Test-Path $anacondaPath2)) {
     Write-Host "Miniconda or Anaconda is already installed. Skipping Miniconda installation."
     Write-Host "If you wish to install Miniconda using this script, please uninstall the existing Anaconda/Miniconda installation and run the script again."
+    Write-Host " "
+    Write-Host "Please visit the following for more information: "
+    Write-Host " "
+    Write-Host "https://pythonsupport.dtu.dk/uninstall/conda.html"
+    Write-Host " "
+    Write-Host "IMPORTANT NOTE!!!"
+    Write-Host "The script aborted during the installation because you already have anaconda/miniconda installed. You are still missing important steps in the installation. Please uninstall Anaconda and run the script again"
 } else {
     # Script by Python Installation Support DTU
     Write-Host "This script will install Python along with Visual Studio Code - and everything you need to get started with programming"
@@ -117,7 +123,7 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     }
 
     # Initialize conda
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" init
+    i "$env:USERPROFILE\Miniconda3\condabin\conda.bat" init
     if ($?) {
         Write-Host "Conda initialized."
     } else {
