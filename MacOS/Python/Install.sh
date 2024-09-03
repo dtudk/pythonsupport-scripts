@@ -65,6 +65,8 @@ _py_version=$PYTHON_VERSION_PS
 echo "Checking for Miniconda or Anaconda installation..."
 if conda --version > /dev/null; then
     echo "Miniconda or Anaconda is already installed."
+    # print conda version 
+    echo "Conda version: $(conda --version)"
     echo "To proceed with the installation, the existing Conda installation must be removed."
     read -p "Do you want to uninstall it? (Type 'yes' to confirm): " confirm
     if [ "$confirm" = "yes" ]; then
