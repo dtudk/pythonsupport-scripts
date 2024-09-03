@@ -55,13 +55,29 @@ _py_version=$PYTHON_VERSION_PS
 # Install miniconda
 # Check if miniconda is installed
 
-echo "Installing Miniconda..."
+echo "Checking for Miniconda or Anaconda installation..."
 if conda --version > /dev/null; then
-    echo "Miniconda or anaconda is already installed"
-else
-    brew install --cask miniconda 
-    [ $? -ne 0 ] && exit_message
+    echo "Miniconda or Anaconda is already installed."
+    echo "To proceed with the installation, the existing Conda installation must be removed."
+    read -p "Do you want to uninstall it? (Type 'yes' to confirm): " confirm
+    if [ "$confirm" = "yes" ]; then
+        echo "Uninstalling existing Conda installation..."
+        conda init --reverse --all
+        cd
+        rm -rf ~/anaconda3
+        rm -rf ~/miniconda3
+        sudo rm -rf /opt/anaconda3
+        sudo rm -rf /opt/miniconda3
+        echo "Existing Conda installation has been removed."
+    else
+        echo "Installation aborted. The script cannot proceed without removing the existing Conda installation."
+        exit 0
+    fi
 fi
+
+echo "Installing Miniconda..."
+brew install --cask miniconda 
+[ $? -ne 0 ] && exit_message
 clear -x
 
 
