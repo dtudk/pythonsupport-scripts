@@ -14,35 +14,42 @@ export BRANCH_PS
 url_ps="https://raw.githubusercontent.com/$REMOTE_PS/$BRANCH_PS/MacOS"
 
 
-Echo "get's to python installation"
+echo "Python installation"
+
 # Check for homebrew
 # if not installed call homebrew installation script
 if ! command -v brew > /dev/null; then
   echo "Homebrew is not installed. Installing Homebrew..."
-  echo "installing from $url_ps/Homebrew/Install.sh"
+  echo "Installing from $url_ps/Homebrew/Install.sh"
   /bin/bash -c "$(curl -fsSL $url_ps/Homebrew/Install.sh)"
+
+  # The above will install everything in a subshell.
+  # So just to be sure we have it on the path
+  [ -e ~/.bash_profile ] && source ~/.bash_profile
+
+  # update binary locations 
+  hash -r 
 fi
 
 
 # Error function 
 # Print error message, contact information and exits script
 exit_message () {
-    echo ""
-    echo "Oh no! Something went wrong"
-    echo ""
-    echo "Please visit the following web page:"
-    echo ""
-    echo "https://pythonsupport.dtu.dk/install/macos/automated-error.html"
-    echo ""
-    echo "or contact the Python Support Team:" 
-    echo ""
-    echo "  pythonsupport@dtu.dk"
-    echo ""
-    echo "Or visit us during our office hours"
-    open https://pythonsupport.dtu.dk/install/macos/automated-error.html
-    exit 1
+  echo ""
+  echo "Oh no! Something went wrong"
+  echo ""
+  echo "Please visit the following web page:"
+  echo ""
+  echo "   https://pythonsupport.dtu.dk/install/macos/automated-error.html"
+  echo ""
+  echo "or contact the Python Support Team:"
+  echo ""
+  echo "   pythonsupport@dtu.dk"
+  echo ""
+  echo "Or visit us during our office hours"
+  open https://pythonsupport.dtu.dk/install/macos/automated-error.html
+  exit 1
 }
-
 
 
 
@@ -90,9 +97,8 @@ conda init zsh
 
 # need to restart terminal to activate conda
 # restart terminal and continue
-
-# 'restart' terminal
-eval "$($brew_path shellenv)"
+# conda puts its source stuff in the bashrc file
+[ -e ~/.bashrc ] && source ~/.bashrc
 
 hash -r 
 clear -x
@@ -102,7 +108,7 @@ conda config --add channels conda-forge
 conda config --remove channels defaults
 
 
-echo "Downgrading python version to ${_py_version}..."
+echo "Ensuring Python version ${_py_version}..."
 conda install python=${_py_version} -y
 [ $? -ne 0 ] && exit_message
 clear -x 
@@ -117,3 +123,5 @@ conda install dtumathtools pandas scipy statsmodels uncertainties -y
 [ $? -ne 0 ] && exit_message
 clear -x
 
+echo ""
+echo "Installed conda and related packages for 1st year at DTU!"
