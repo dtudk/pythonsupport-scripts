@@ -67,6 +67,7 @@ if conda --version > /dev/null; then
     echo "Miniconda or Anaconda is already installed."
     # print conda version 
     echo "Conda version: $(conda --version)"
+    clear -x 
     echo "To proceed with the installation, the existing Conda installation must be removed."
     read -p "Do you want to uninstall it? (Type 'yes' to confirm): " confirm
     if [ "$confirm" = "yes" ]; then
@@ -115,10 +116,6 @@ conda install python=${_py_version} -y
 [ $? -ne 0 ] && exit_message
 clear -x 
 
-# We will not install the Anaconda GUI
-# There may be license issues due to DTU being
-# a rather big institution. So our installation guides
-# Will be pre-cautious here, and remove the defaults channels.
 
 echo "Installing packages..."
 conda install dtumathtools pandas scipy statsmodels uncertainties -y
