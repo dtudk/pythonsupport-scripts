@@ -117,7 +117,7 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     }
 
     # Initialize conda
-    i "$env:USERPROFILE\Miniconda3\condabin\conda.bat" init
+    "$env:USERPROFILE\Miniconda3\condabin\conda.bat" init
     if ($?) {
         Write-Output "Conda initialized."
     } else {
