@@ -48,7 +48,7 @@ exit_message () {
   echo ""
   echo "Or visit us during our office hours"
   open https://pythonsupport.dtu.dk/install/macos/automated-error.html
-  exit 1
+  exit 0
 }
 
 
@@ -65,24 +65,55 @@ _py_version=$PYTHON_VERSION_PS
 echo "Checking for Miniconda or Anaconda installation..."
 if conda --version > /dev/null; then
     echo "Miniconda or Anaconda is already installed."
-    # print conda version 
-    echo "Conda version: $(conda --version)"
-    clear -x 
-    echo "To proceed with the installation, the existing Conda installation must be removed."
-    read -p "Do you want to uninstall it? (Type 'yes' to confirm): " confirm
-    if [ "$confirm" = "yes" ]; then
-        echo "Uninstalling existing Conda installation..."
-        conda init --reverse --all
-        cd
-        rm -rf ~/anaconda3
-        rm -rf ~/miniconda3
-        sudo rm -rf /opt/anaconda3
-        sudo rm -rf /opt/miniconda3
-        echo "Existing Conda installation has been removed."
-    else
-        echo "Installation aborted. The script cannot proceed without removing the existing Conda installation."
-        exit 0
+
+# checks for homebrew installations 
+    if [[ $(conda info --base 2> /dev/null) == *"/Caskroom/miniconda"* ]]; then
+        echo "Existing Miniconda installation through homebrew detected."
+        echo "Do you want to uninstall it?"
+        if [ "$confirm" = "yes" ]; then
+            echo "Uninstalling existing Homebrew Miniconda installation..."
+            conda init --reverse --all
+            brew uninstall --cask miniconda
+            echo "Existing Miniconda installation has been removed."
+        else
+            echo "Installation aborted. The script cannot proceed without removing the existing Miniconda installation."
+            exit 0
+        fi
     fi
+
+    if [[ $(conda info --base 2> /dev/null) == *"/Caskroom/anaconda"* ]]; then
+        echo "Existing Anaconda installation through homebrew detected."
+        echo "Do you want to uninstall it?"
+        if [ "$confirm" = "yes" ]; then
+            echo "Uninstalling existing Homebrew Anaconda installation..."
+            conda init --reverse --all
+            brew uninstall --cask anaconda
+            echo "Existing Anaconda installation has been removed."
+        else
+            echo "Installation aborted. The script cannot proceed without removing the existing Anaconda installation."
+            exit 0
+        fi
+    fi
+    # Checks for ordinary installations
+    conda_path=$(conda info --base 2> /dev/null)
+    if [[ -n "$conda_path" && "$conda_path" != *"/Caskroom/"* ]]; then
+        echo "Existing ordinary Conda installation detected at $conda_path"
+        echo "Do you want to uninstall it? (yes/no)"
+        if [ "$confirm" = "yes" ]; then
+            echo "Uninstalling existing Conda installation..."
+            conda init --reverse --all
+            # Remove the directory that contains 'base'
+            conda_install_dir=$(dirname "$conda_path")
+            sudo rm -rf "$conda_install_dir"
+            echo "Existing Conda installation has been removed."
+        else
+            echo "Installation aborted. The script cannot proceed without removing the existing Conda installation."
+            exit 0
+        fi
+    fi
+
+# Call installation script again 
+/bin/bash -c "$(curl -fsSL $url_ps/Python/Install.sh)"
 fi
 
 echo "Installing Miniconda..."

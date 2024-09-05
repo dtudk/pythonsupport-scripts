@@ -44,116 +44,116 @@ $anacondaPath1 = "$env:USERPROFILE\Anaconda3"
 $anacondaPath2 = "C:\ProgramData\Anaconda3"
 
 if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $anacondaPath1) -or (Test-Path $anacondaPath2)) {
-    Write-Host "Miniconda or Anaconda is already installed. Skipping Miniconda installation."
-    Write-Host "If you wish to install Miniconda using this script, please uninstall the existing Anaconda/Miniconda installation and run the script again."
-    Write-Host " "
-    Write-Host "Please visit the following for more information: "
-    Write-Host " "
-    Write-Host "    https://pythonsupport.dtu.dk/uninstall/conda.html"
-    Write-Host " "
-    Write-Host "IMPORTANT NOTE!!!"
-    Write-Host "The python installation aborted because you already have anaconda/miniconda installed. You are still missing important steps in the installation. Please uninstall Anaconda and run the script again"
-    Write-Host " "
-    Write-Host "Continuing with VS Code installation"
-
-} else {
-    # Script by Python Installation Support DTU
-    Write-Output "This script will install Python along with Visual Studio Code - and everything you need to get started with programming"
-    Write-Output "This script will take a while to run, please be patient, and don't close PowerShell before it says 'script finished'."
-    Start-Sleep -Seconds 3
-
-    # Download the Miniconda installer
-    $minicondaUrl = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe"
-    $minicondaInstallerPath = "$env:USERPROFILE\Downloads\Miniconda3-latest-Windows-x86_64.exe"
-
-    Write-Output "Downloading installer for Miniconda..."
-    Invoke-WebRequest -Uri $minicondaUrl -OutFile $minicondaInstallerPath
-    if ($?) {
-        Write-Output "Miniconda installer downloaded."
-    } else {
-        Exit-Message
-    }
-
-    Write-Output "Will now install Miniconda..."
-    # Install Miniconda
-    Start-Process -FilePath $minicondaInstallerPath -ArgumentList "/InstallationType=JustMe /RegisterPython=1 /S /D=$env:USERPROFILE\Miniconda3" -Wait
-    if ($?) {
-        Write-Output "Miniconda installed."
-    } else {
-        Exit-Message
-    }
-
-    # Add miniconda to PATH and refresh environment variables
-    function Add-CondaToPath {
-        if (Test-Path "$env:USERPROFILE\Miniconda3\condabin") {
-            $condaPath = "$env:USERPROFILE\Miniconda3\condabin"
-        } elseif (Test-Path "C:\ProgramData\Miniconda3\condabin") {
-            $condaPath = "C:\ProgramData\Miniconda3\condabin"
-        } else {
-            Write-Output "Miniconda is not installed."
-            Exit-Message
-        }
-
-        if (-not ($env:Path -contains $condaPath)) {
-            [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";$condaPath", [System.EnvironmentVariableTarget]::User)
-        }
-    }
-
-    Add-CondaToPath
-    if ($?) {
-        Refresh-Env
-        Write-Output "Environment variables refreshed."
-    } else {
-        Exit-Message
-    }
-
-    # Re-import the updated PATH for the current session
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
-
-    # Activate conda base environment
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" activate
-    if ($?) {
-        Write-Output "Conda base environment activated."
-    } else {
-        Exit-Message
-    }
-
-    # Initialize conda
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" init
-    if ($?) {
-        Write-Output "Conda initialized."
-    } else {
-        Exit-Message
-    }
-
-    # Ensuring correct channels are set
-    Write-Output "Removing defaults channel (due to licensing problems)"
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --add channels conda-forge
-    if (-not $?) {
-        Exit-Message
-    }
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --remove channels defaults
-    if (-not $?) {
-        Exit-Message
-    }
-
-    # Ensure version of Python
-    Write-Output "Updating Python to version $env:PYTHON_VERSION_PS..."
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" install python=$env:PYTHON_VERSION_PS -y
-    if ($?) {
-        Write-Output "Python updated version installed."
-    } else {
-        Exit-Message
-    }
-
-        
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" install dtumathtools pandas scipy statsmodels uncertainties -y
-    if ($?) {
-        Write-Output "Additional packages installed."
-    } else {
-        Exit-Message
-    }
-
-    Write-Output "Installed conda and related packages for 1st year at DTU!"
+    Write-Output "Miniconda or Anaconda is already installed. Skipping Miniconda installation."
+    Write-Output "If you wish to install Miniconda using this script, please uninstall the existing Anaconda/Miniconda installation and run the script again."
+    Write-Output ""
+    Write-Output "Please visit the following for more information: "
+    Write-Output ""
+    Write-Output "    https://pythonsupport.dtu.dk/uninstall/conda.html"
+    Write-Output ""
+    Write-Output "IMPORTANT NOTE!!!"
+    Write-Output "The python installation aborted because you already have anaconda/miniconda installed. You are still missing important steps in the installation. Please uninstall Anaconda and run the script again"
+    Write-Output ""
+    exit 1
 }
+
+
+# Script by Python Installation Support DTU
+Write-Output "This script will install Python along with Visual Studio Code - and everything you need to get started with programming"
+Write-Output "This script will take a while to run, please be patient, and don't close PowerShell before it says 'script finished'."
+Start-Sleep -Seconds 3
+
+# Download the Miniconda installer
+$minicondaUrl = "https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe"
+$minicondaInstallerPath = "$env:USERPROFILE\Downloads\Miniconda3-latest-Windows-x86_64.exe"
+
+Write-Output "Downloading installer for Miniconda..."
+Invoke-WebRequest -Uri $minicondaUrl -OutFile $minicondaInstallerPath
+if ($?) {
+    Write-Output "Miniconda installer downloaded."
+} else {
+    Exit-Message
+}
+
+Write-Output "Will now install Miniconda..."
+# Install Miniconda
+Start-Process -FilePath $minicondaInstallerPath -ArgumentList "/InstallationType=JustMe /RegisterPython=1 /S /D=$env:USERPROFILE\Miniconda3" -Wait
+if ($?) {
+    Write-Output "Miniconda installed."
+} else {
+    Exit-Message
+}
+
+# Add miniconda to PATH and refresh environment variables
+function Add-CondaToPath {
+    if (Test-Path "$env:USERPROFILE\Miniconda3\condabin") {
+        $condaPath = "$env:USERPROFILE\Miniconda3\condabin"
+    } elseif (Test-Path "C:\ProgramData\Miniconda3\condabin") {
+        $condaPath = "C:\ProgramData\Miniconda3\condabin"
+    } else {
+        Write-Output "Miniconda is not installed."
+        Exit-Message
+    }
+
+    if (-not ($env:Path -contains $condaPath)) {
+        [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";$condaPath", [System.EnvironmentVariableTarget]::User)
+    }
+}
+
+Add-CondaToPath
+if ($?) {
+    Refresh-Env
+    Write-Output "Environment variables refreshed."
+} else {
+    Exit-Message
+}
+
+# Re-import the updated PATH for the current session
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
+
+# Activate conda base environment
+& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" activate
+if ($?) {
+    Write-Output "Conda base environment activated."
+} else {
+    Exit-Message
+}
+
+# Initialize conda
+& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" init
+if ($?) {
+    Write-Output "Conda initialized."
+} else {
+    Exit-Message
+}
+
+# Ensuring correct channels are set
+Write-Output "Removing defaults channel (due to licensing problems)"
+& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --add channels conda-forge
+if (-not $?) {
+    Exit-Message
+}
+& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --remove channels defaults
+if (-not $?) {
+    Exit-Message
+}
+
+# Ensure version of Python
+Write-Output "Updating Python to version $env:PYTHON_VERSION_PS..."
+& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" install python=$env:PYTHON_VERSION_PS -y
+if ($?) {
+    Write-Output "Python updated version installed."
+} else {
+    Exit-Message
+}
+
+    
+& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" install dtumathtools pandas scipy statsmodels uncertainties -y
+if ($?) {
+    Write-Output "Additional packages installed."
+} else {
+    Exit-Message
+}
+
+Write-Output "Installed conda and related packages for 1st year at DTU!"
 

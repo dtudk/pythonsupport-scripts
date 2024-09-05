@@ -18,10 +18,15 @@ Write-Output "Running Windows_python.ps1"
 PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/Python/Install.ps1' -UseBasicParsing).Content}"
 
 
-Write-Output "Running Windows_VSC.ps1"
-# link to full VSC installation
-PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/VSC/Install.ps1' -UseBasicParsing).Content}"
 
+# Only start if python succesfull 
+#
+if ($?) {
+PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/VSC/Install.ps1' -UseBasicParsing).Content}"
+} else {
+  Write-Output "Python installation failed. Skipping VS Code installation and aborting."
+  exit 0
+}
 
 Write-Output ""
 Write-Output "Script has finished. You may now close the terminal..."
