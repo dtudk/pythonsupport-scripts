@@ -49,10 +49,12 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     Write-Host " "
     Write-Host "Please visit the following for more information: "
     Write-Host " "
-    Write-Host "https://pythonsupport.dtu.dk/uninstall/conda.html"
+    Write-Host "    https://pythonsupport.dtu.dk/uninstall/conda.html"
     Write-Host " "
     Write-Host "IMPORTANT NOTE!!!"
-    Write-Host "The script aborted during the installation because you already have anaconda/miniconda installed. You are still missing important steps in the installation. Please uninstall Anaconda and run the script again"
+    Write-Host "The python installation aborted because you already have anaconda/miniconda installed. You are still missing important steps in the installation. Please uninstall Anaconda and run the script again"
+    Write-Host " "
+    Write-Host "Continuing with VS Code installation"
 
 } else {
     # Script by Python Installation Support DTU
@@ -151,6 +153,7 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     } else {
         Exit-Message
     }
+
+    Write-Output "Installed conda and related packages for 1st year at DTU!"
 }
 
-Write-Output "Installed conda and related packages for 1st year at DTU!"
