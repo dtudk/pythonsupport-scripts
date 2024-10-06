@@ -16,7 +16,11 @@ Write-Output "Path before invoking webrequests: $url_ps"
 Write-Output "Running Windows_python.ps1"
 # link to full python installation 
 PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/Python/Install.ps1' -UseBasicParsing).Content}"
-
+# check if python installation succesfull otherwise exit
+if (-not $?) {
+    Write-Output "Python installation failed. Exiting script."
+    exit 1
+}
 
 
 # Only start if python succesfull 
