@@ -1,4 +1,3 @@
-
 # checks for environmental variables for remote and branch 
 if [ -z "$REMOTE_PS" ]; then
   REMOTE_PS="dtudk/pythonsupport-scripts"
@@ -66,10 +65,20 @@ echo "Checking for Miniconda or Anaconda installation..."
 if conda --version > /dev/null; then
     echo "Miniconda or Anaconda is already installed."
 
-# checks for homebrew installations 
+    # function to handle user confirmation
+    get_user_confirmation() {
+        read -p "Do you want to uninstall it? (yes/no): " confirm
+        confirm=$(echo "$confirm" | tr '[:upper:]' '[:lower:]')
+        if [[ "$confirm" != "yes" && "$confirm" != "no" ]]; then
+            echo "Please answer yes or no."
+            get_user_confirmation
+        fi
+    }
+
+    # checks for homebrew installations 
     if [[ $(conda info --base 2> /dev/null) == *"/Caskroom/miniconda"* ]]; then
         echo "Existing Miniconda installation through homebrew detected."
-        echo "Do you want to uninstall it?"
+        get_user_confirmation
         if [ "$confirm" = "yes" ]; then
             echo "Uninstalling existing Homebrew Miniconda installation..."
             conda init --reverse --all
@@ -83,7 +92,7 @@ if conda --version > /dev/null; then
 
     if [[ $(conda info --base 2> /dev/null) == *"/Caskroom/anaconda"* ]]; then
         echo "Existing Anaconda installation through homebrew detected."
-        echo "Do you want to uninstall it?"
+        get_user_confirmation
         if [ "$confirm" = "yes" ]; then
             echo "Uninstalling existing Homebrew Anaconda installation..."
             conda init --reverse --all
@@ -98,7 +107,7 @@ if conda --version > /dev/null; then
     conda_path=$(conda info --base 2> /dev/null)
     if [[ -n "$conda_path" && "$conda_path" != *"/Caskroom/"* ]]; then
         echo "Existing ordinary Conda installation detected at $conda_path"
-        echo "Do you want to uninstall it? (yes/no)"
+        get_user_confirmation
         if [ "$confirm" = "yes" ]; then
             echo "Uninstalling existing Conda installation..."
             conda init --reverse --all
