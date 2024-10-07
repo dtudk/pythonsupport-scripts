@@ -52,7 +52,7 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     Write-Output "    https://pythonsupport.dtu.dk/uninstall/conda.html"
     Write-Output ""
     Write-Output "IMPORTANT NOTE!!!"
-    Write-Output "The python installation aborted because you already have anaconda/miniconda installed. You are still missing important steps in the installation. Please uninstall Anaconda and run the script again"
+    Write-Output "The Python installation aborted because you already have Anaconda/Miniconda installed. You are still missing important steps in the installation. Please uninstall Anaconda and run the script again."
     Write-Output ""
     exit 1
 }
