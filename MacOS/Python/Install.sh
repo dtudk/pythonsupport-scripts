@@ -124,8 +124,8 @@ if conda --version > /dev/null; then
         fi
     fi
 
-# Call installation script again 
-/bin/bash -c "$(curl -fsSL $url_ps/Python/Install.sh)"
+    # Call installation script again 
+    /bin/bash -c "$(curl -fsSL $url_ps/Python/Install.sh)"
 fi
 
 echo "Installing Miniconda..."
