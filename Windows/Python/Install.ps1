@@ -118,8 +118,9 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     
     # Try again to figure out what `conda` points too
     $conda_paths = Get-Command -ErrorAction:SilentlyContinue conda
-    if ($cond_paths -contains "Miniconda3/conda") {
-    	Write-Output "$_prefix Located conda here: $conda_paths"
+    Write-Output "$_prefix Located conda here: $conda_paths"
+    if ($conda_paths -contains "Miniconda3/conda") {
+    	Write-Output "$_prefix Default conda installation is the Miniconda3 path..."
     }
 
     # Initialize conda
@@ -149,6 +150,8 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     if (-not $?) {
         Exit-Message
     }
+
+    Set-PSDebug -Trace 1
 
     Write-Output "$_prefix Ensuring Python version $env:PYTHON_VERSION_PS..."
     conda install python=$env:PYTHON_VERSION_PS -y
