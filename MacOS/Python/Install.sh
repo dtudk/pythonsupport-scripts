@@ -75,8 +75,11 @@ if conda --version > /dev/null; then
         fi
     }
 
+    # Store conda info --base output in a variable
+    conda_info_base=$(conda info --base 2> /dev/null)
+
     # checks for homebrew installations 
-    if [[ $(conda info --base 2> /dev/null) == *"/Caskroom/miniconda"* ]]; then
+    if [[ "$conda_info_base" == *"/Caskroom/miniconda"* ]]; then
         echo "Existing Miniconda installation through homebrew detected."
         get_user_confirmation
         if [ "$confirm" = "yes" ]; then
@@ -90,7 +93,7 @@ if conda --version > /dev/null; then
         fi
     fi
 
-    if [[ $(conda info --base 2> /dev/null) == *"/Caskroom/anaconda"* ]]; then
+    if [[ "$conda_info_base" == *"/Caskroom/anaconda"* ]]; then
         echo "Existing Anaconda installation through homebrew detected."
         get_user_confirmation
         if [ "$confirm" = "yes" ]; then
@@ -103,16 +106,16 @@ if conda --version > /dev/null; then
             exit 0
         fi
     fi
+
     # Checks for ordinary installations
-    conda_path=$(conda info --base 2> /dev/null)
-    if [[ -n "$conda_path" && "$conda_path" != *"/Caskroom/"* ]]; then
-        echo "Existing ordinary Conda installation detected at $conda_path"
+    if [[ -n "$conda_info_base" && "$conda_info_base" != *"/Caskroom/"* ]]; then
+        echo "Existing ordinary Conda installation detected at $conda_info_base"
         get_user_confirmation
         if [ "$confirm" = "yes" ]; then
             echo "Uninstalling existing Conda installation..."
             conda init --reverse --all
             # Remove the directory that contains 'base'
-            conda_install_dir=$(dirname "$conda_path")
+            conda_install_dir=$(dirname "$conda_info_base")
             sudo rm -rf "$conda_install_dir"
             echo "Existing Conda installation has been removed."
         else
