@@ -151,7 +151,7 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
         Exit-Message
     }
 
-    Set-PSDebug -Trace 1
+    Set-PSDebug -Trace 2
 
     Write-Output "$_prefix Ensuring Python version $env:PYTHON_VERSION_PS..."
     conda install python=$env:PYTHON_VERSION_PS -y
