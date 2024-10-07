@@ -1,3 +1,6 @@
+
+$_prefix = "PYS:"
+
 # check for env variable PYTHONVERSIONPS 
 # if it isn't set set it to 3.11
 
@@ -34,7 +37,7 @@ $localMachinePolicy = $executionPolicies | Where-Object { $_.Scope -eq "LocalMac
 
 if ($currentUserPolicy -ne "RemoteSigned" -and $currentUserPolicy -ne "Bypass" -and $currentUserPolicy -ne "Unrestricted" -and
     $localMachinePolicy -ne "RemoteSigned" -and $localMachinePolicy -ne "Unrestricted" -and $localMachinePolicy -ne "Bypass") {
-    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+    Set-ExecutionPolicy -WarningAction:SilentlyContinue RemoteSigned -Scope CurrentUser -Force
 }
 
 # Check if Miniconda or Anaconda is already installed
@@ -72,6 +75,7 @@ Invoke-WebRequest -Uri $minicondaUrl -OutFile $minicondaInstallerPath
 if ($?) {
     Write-Output "Miniconda installer downloaded."
 } else {
+
     Exit-Message
 }
 
@@ -90,13 +94,16 @@ function Add-CondaToPath {
         $condaPath = "$env:USERPROFILE\Miniconda3\condabin"
     } elseif (Test-Path "C:\ProgramData\Miniconda3\condabin") {
         $condaPath = "C:\ProgramData\Miniconda3\condabin"
+
     } else {
         Write-Output "Miniconda is not installed."
         Exit-Message
     }
 
+
     if (-not ($env:Path -contains $condaPath)) {
         [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";$condaPath", [System.EnvironmentVariableTarget]::User)
+
     }
 }
 
