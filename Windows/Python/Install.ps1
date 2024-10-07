@@ -103,7 +103,8 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     # Check conda-paths
     $conda_paths = Get-Command -ErrorAction:SilentlyContinue conda
     if ($?) {
-        Write-Output "$conda_paths"
+        Write-Output "$_prefix Trying to manually activate conda..."
+        Write-Output " - $conda_paths"
 
         # Forcefully running the conda.bat file
         & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" activate
@@ -113,6 +114,12 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     if (-not $?) {
         Write-Output "$_prefix Conda base environment failed to activate."
         Exit-Message
+    }
+    
+    # Try again to figure out what `conda` points too
+    $conda_paths = Get-Command -ErrorAction:SilentlyContinue conda
+    if ($cond_paths -contains "Miniconda3/conda") {
+    	Write-Output "$_prefix Located conda here: $conda_paths"
     }
 
     # Initialize conda
@@ -130,21 +137,21 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
 
     # Ensuring correct channels are set
     Write-Output "$_prefix Removing defaults channel (due to licensing problems)"
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --add channels conda-forge
+    conda config --add channels conda-forge
     if (-not $?) {
         Exit-Message
     }
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --remove channels defaults
+    conda config --remove channels defaults
     if (-not $?) {
         Exit-Message
     }
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --set channel_priority strict
+    conda config --set channel_priority strict
     if (-not $?) {
         Exit-Message
     }
 
     Write-Output "$_prefix Ensuring Python version $env:PYTHON_VERSION_PS..."
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" install python=$env:PYTHON_VERSION_PS -y
+    conda install python=$env:PYTHON_VERSION_PS -y
     if (-not $?) {
         Exit-Message
     }
@@ -156,7 +163,7 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     # Install packages
         
     Write-Output "$_prefix Installing packages..."
-    & "$env:USERPROFILE\Miniconda3\condabin\conda.bat" install dtumathtools pandas scipy statsmodels uncertainties -y
+    conda install dtumathtools pandas scipy statsmodels uncertainties -y
     if (-not $?) {
         Exit-Message
     }
