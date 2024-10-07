@@ -59,7 +59,7 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
 
 
 # Script by Python Installation Support DTU
-Write-Output "This script will install Python along with Visual Studio Code - and everything you need to get started with programming"
+Write-Output "This script will install Python along with Visual Studio Code - and everything you need to get started with the 1st semester at DTU"
 Write-Output "This script will take a while to run, please be patient, and don't close PowerShell before it says 'script finished'."
 Start-Sleep -Seconds 3
 
