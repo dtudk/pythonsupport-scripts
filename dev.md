@@ -36,3 +36,12 @@ PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebReq
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/main/MacOS/Python/deletePythonMac.sh)"
 ```
 
+# Health Check 
+## windows 
+
+```{powershell}
+
+PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/main/Windows/HealthCheck.ps1' -UseBasicParsing).Content}"
+```
+
+
