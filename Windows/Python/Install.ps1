@@ -157,6 +157,12 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.Environ
     if (-not $?) {
         Exit-Message
     }
+
+    Write-Output "$_prefix Changing channel priority back to flexible..."
+    & $condaBatPath config --set channel_priority flexible
+    if (-not $?) {
+        Exit-Message
+    }
 }
 
 # Ensure version of Python
