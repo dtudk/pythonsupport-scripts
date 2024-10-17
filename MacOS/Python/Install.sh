@@ -33,6 +33,8 @@ if ! command -v brew > /dev/null; then
 fi
 echo "$_prefix Homebrew is installed"
 which brew
+# does brew work?
+brew doctor
 
 
 # Error function 
