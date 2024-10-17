@@ -158,7 +158,6 @@ echo "$_prefix Showing where it is installed:"
 conda info --base
 [ $? -ne 0 ] && exit_message
 
-hash -r 
 clear -x
 
 echo "$_prefix Removing defaults channel (due to licensing problems)"
