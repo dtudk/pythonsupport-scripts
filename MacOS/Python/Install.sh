@@ -149,11 +149,25 @@ conda init bash
 conda init zsh
 [ $? -ne 0 ] && exit_message
 
-# for CI purposes
-if [ ! -t 0 ]; then
-    echo "Non-interactive mode detected. Initializing conda for xonsh."
-    conda init xonsh
-fi
+echo "$_prefix Updating PATH to use new conda installation..."
+CONDA_BASE=$(brew --prefix miniconda)
+export PATH="$CONDA_BASE/bin:$PATH"
+
+# Update shell configuration files
+echo "export PATH=\"$CONDA_BASE/bin:\$PATH\"" >> ~/.bash_profile
+echo "export PATH=\"$CONDA_BASE/bin:\$PATH\"" >> ~/.zshrc
+
+# Reload shell configuration
+source ~/.bash_profile
+source ~/.zshrc
+
+# Verify conda installation
+echo "$_prefix Verifying conda installation..."
+which conda
+conda info --base
+
+# Initialize conda for the current shell
+eval "$(conda shell.bash hook)"
 
 # need to restart terminal to activate conda
 # restart terminal and continue
@@ -173,13 +187,13 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 
 echo "$_prefix Ensuring Python version ${_py_version}..."
-conda install python=${_py_version} -y
+$CONDA_BASE/bin/conda install python=${_py_version} -y
 [ $? -ne 0 ] && exit_message
 clear -x 
 
 
 echo "$_prefix Installing packages..."
-conda install dtumathtools pandas scipy statsmodels uncertainties -y
+$CONDA_BASE/bin/conda install dtumathtools pandas scipy statsmodels uncertainties -y
 [ $? -ne 0 ] && exit_message
 clear -x
 
