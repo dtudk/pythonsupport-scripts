@@ -149,8 +149,18 @@ conda init bash
 conda init zsh
 [ $? -ne 0 ] && exit_message
 
+# Get Miniconda installation path
+echo "$_prefix Locating Miniconda installation..."
+CONDA_BASE=$(conda info --base)
+
+if [ -z "$CONDA_BASE" ]; then
+    echo "$_prefix Error: Miniconda installation not found. Please check your installation."
+    exit_message
+fi
+
+echo "$_prefix Miniconda found at: $CONDA_BASE"
+
 echo "$_prefix Updating PATH to use new conda installation..."
-CONDA_BASE="/usr/local/Caskroom/miniconda/base"
 export PATH="$CONDA_BASE/bin:$PATH"
 
 # Update shell configuration files
@@ -167,13 +177,7 @@ which conda
 conda info --base
 
 # Initialize conda for the current shell
-eval "$(conda shell.bash hook)"
 
-echo "$_prefix Showing where it is installed:"
-conda info --base
-[ $? -ne 0 ] && exit_message
-
-clear -x
 
 echo "$_prefix Removing defaults channel (due to licensing problems)"
 conda config --remove channels defaults
@@ -182,13 +186,12 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 
 echo "$_prefix Ensuring Python version ${_py_version}..."
-"$CONDA_BASE/bin/conda" install python=${_py_version} -y
+conda install python=${_py_version} -y
 [ $? -ne 0 ] && exit_message
 clear -x 
 
-
 echo "$_prefix Installing packages..."
-"$CONDA_BASE/bin/conda" install dtumathtools pandas scipy statsmodels uncertainties -y
+conda install dtumathtools pandas scipy statsmodels uncertainties -y
 [ $? -ne 0 ] && exit_message
 clear -x
 
