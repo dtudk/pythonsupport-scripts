@@ -9,7 +9,6 @@ if (-not $env:PYTHON_VERSION_PS) {
 }
 
 
-
 # Function to refresh environment variables in the current session
 function Refresh-Env {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
@@ -118,31 +117,46 @@ if ($?) {
 # Re-import the updated PATH for the current session
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
 
-# Activate conda base environment
-& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" activate
-if ($?) {
-    Write-Output "Conda base environment activated."
-} else {
-    Exit-Message
-}
 
-# Initialize conda
-& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" init
-if ($?) {
-    Write-Output "Conda initialized."
-} else {
-    Exit-Message
-}
 
-# Ensuring correct channels are set
-Write-Output "Removing defaults channel (due to licensing problems)"
-& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --add channels conda-forge
-if (-not $?) {
-    Exit-Message
-}
-& "$env:USERPROFILE\Miniconda3\condabin\conda.bat" config --remove channels defaults
-if (-not $?) {
-    Exit-Message
+    $condaBatPath = "$env:USERPROFILE\Miniconda3\condabin\conda.bat"
+
+
+
+    # Ensuring correct channels are set
+    Write-Output "$_prefix Removing defaults channel (due to licensing problems)"
+    & $condaBatPath config --add channels conda-forge
+    if (-not $?) {
+        Exit-Message
+    }
+    & $condaBatPath config --remove channels defaults
+    if (-not $?) {
+        Exit-Message
+    }
+    & $condaBatPath config --set channel_priority strict
+    if (-not $?) {
+        Exit-Message
+    }
+     # Ensures correct version of python
+
+    if (-not $env:PYTHON_INSTALL_COMMAND_EXECUTED) {
+        & $condaBatPath install python=$env:PYTHON_VERSION_PS -y
+        $env:PYTHON_INSTALL_COMMAND_EXECUTED = "true"
+    } else {
+        Write-Output "Python installation command has already been executed, skipping..."
+    }
+    if (-not $?) {
+        Exit-Message
+    }
+
+   
+   # Install packages
+        
+    Write-Output "$_prefix Installing packages..."
+    & $condaBatPath install dtumathtools pandas scipy statsmodels uncertainties -y
+    if (-not $?) {
+        Exit-Message
+    }
 }
 
 # Ensure version of Python
