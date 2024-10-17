@@ -150,7 +150,7 @@ conda init zsh
 [ $? -ne 0 ] && exit_message
 
 echo "$_prefix Updating PATH to use new conda installation..."
-CONDA_BASE=$(brew --prefix miniconda)
+CONDA_BASE="/usr/local/Caskroom/miniconda/base"
 export PATH="$CONDA_BASE/bin:$PATH"
 
 # Update shell configuration files
@@ -169,11 +169,6 @@ conda info --base
 # Initialize conda for the current shell
 eval "$(conda shell.bash hook)"
 
-# need to restart terminal to activate conda
-# restart terminal and continue
-# conda puts its source stuff in the bashrc file
-[ -e ~/.bashrc ] && source ~/.bashrc
-
 echo "$_prefix Showing where it is installed:"
 conda info --base
 [ $? -ne 0 ] && exit_message
@@ -187,13 +182,13 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 
 echo "$_prefix Ensuring Python version ${_py_version}..."
-$CONDA_BASE/bin/conda install python=${_py_version} -y
+"$CONDA_BASE/bin/conda" install python=${_py_version} -y
 [ $? -ne 0 ] && exit_message
 clear -x 
 
 
 echo "$_prefix Installing packages..."
-$CONDA_BASE/bin/conda install dtumathtools pandas scipy statsmodels uncertainties -y
+"$CONDA_BASE/bin/conda" install dtumathtools pandas scipy statsmodels uncertainties -y
 [ $? -ne 0 ] && exit_message
 clear -x
 
