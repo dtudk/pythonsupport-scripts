@@ -31,6 +31,8 @@ if ! command -v brew > /dev/null; then
   # update binary locations 
   hash -r 
 fi
+echo "$_prefix Homebrew is installed"
+which brew
 
 
 # Error function 
