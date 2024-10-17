@@ -31,6 +31,10 @@ if ! command -v brew > /dev/null; then
   # update binary locations 
   hash -r 
 fi
+echo "$_prefix Homebrew is installed"
+which brew
+# does brew work?
+brew doctor
 
 
 # Error function 
@@ -49,7 +53,7 @@ exit_message () {
   echo ""
   echo "Or visit us during our office hours"
   open https://pythonsupport.dtu.dk/install/macos/automated-error.html
-  exit 1
+  exit 0
 }
 
 
@@ -63,14 +67,81 @@ _py_version=$PYTHON_VERSION_PS
 # Install miniconda
 # Check if miniconda is installed
 
-echo "$_prefix Installing Miniconda..."
+echo "Checking for Miniconda or Anaconda installation..."
 if conda --version > /dev/null; then
-  echo "$_prefix Miniconda or anaconda is already installed"
-else
-  echo "$_prefix Miniconda or anaconda not found, installing Miniconda"
-  brew install --cask miniconda
-  [ $? -ne 0 ] && exit_message
+    echo "Miniconda or Anaconda is already installed."
+
+    # function to handle user confirmation
+    get_user_confirmation() {
+        if [ -t 0 ]; then
+            # Interactive mode
+            read -p "Do you want to uninstall it? (yes/no): " confirm
+        else
+            # Non-interactive mode (piped input)
+            echo "Non-interactive mode detected. Proceeding with uninstallation."
+            confirm="yes"
+        fi
+        confirm=$(echo "$confirm" | tr '[:upper:]' '[:lower:]')
+        if [[ "$confirm" != "yes" && "$confirm" != "no" ]]; then
+            echo "Please answer yes or no."
+            get_user_confirmation
+        fi
+    }
+
+    # Store conda info --base output in a variable
+    conda_info_base=$(conda info --base 2> /dev/null)
+
+    # checks for homebrew installations 
+    if [[ "$conda_info_base" == *"/Caskroom/miniconda"* ]]; then
+        echo "Existing Miniconda installation through homebrew detected."
+        get_user_confirmation
+        if [ "$confirm" = "yes" ]; then
+            echo "Uninstalling existing Homebrew Miniconda installation..."
+            conda init --reverse --all
+            brew uninstall --cask miniconda
+            echo "Existing Miniconda installation has been removed."
+        else
+            echo "Installation aborted. The script cannot proceed without removing the existing Miniconda installation."
+            exit 0
+        fi
+    fi
+
+    if [[ "$conda_info_base" == *"/Caskroom/anaconda"* ]]; then
+        echo "Existing Anaconda installation through homebrew detected."
+        get_user_confirmation
+        if [ "$confirm" = "yes" ]; then
+            echo "Uninstalling existing Homebrew Anaconda installation..."
+            conda init --reverse --all
+            brew uninstall --cask anaconda
+            echo "Existing Anaconda installation has been removed."
+        else
+            echo "Installation aborted. The script cannot proceed without removing the existing Anaconda installation."
+            exit 0
+        fi
+    fi
+
+    # Checks for ordinary installations
+    if [[ -n "$conda_info_base" && "$conda_info_base" != *"/Caskroom/"* ]]; then
+        echo "Existing ordinary Conda installation detected at $conda_info_base"
+        get_user_confirmation
+        if [ "$confirm" = "yes" ]; then
+            echo "Uninstalling existing Conda installation..."
+            conda init --reverse --all
+            # Remove the directory that contains 'base'
+            conda_install_dir=$(dirname "$conda_info_base")
+            sudo rm -rf "$conda_install_dir"
+            echo "Existing Conda installation has been removed."
+        else
+            echo "Installation aborted. The script cannot proceed without removing the existing Conda installation."
+            exit 0
+        fi
+    fi
+
 fi
+
+echo "Installing Miniconda..."
+brew install --cask miniconda 
+[ $? -ne 0 ] && exit_message
 clear -x
 
 echo "$_prefix Initialising conda..."
@@ -80,17 +151,35 @@ conda init bash
 conda init zsh
 [ $? -ne 0 ] && exit_message
 
-# need to restart terminal to activate conda
-# restart terminal and continue
-# conda puts its source stuff in the bashrc file
-[ -e ~/.bashrc ] && source ~/.bashrc
+# Get Miniconda installation path
+echo "$_prefix Locating Miniconda installation..."
+CONDA_BASE=$(conda info --base)
 
-echo "$_prefix Showing where it is installed:"
+if [ -z "$CONDA_BASE" ]; then
+    echo "$_prefix Error: Miniconda installation not found. Please check your installation."
+    exit_message
+fi
+
+echo "$_prefix Miniconda found at: $CONDA_BASE"
+
+echo "$_prefix Updating PATH to use new conda installation..."
+export PATH="$CONDA_BASE/bin:$PATH"
+
+# Update shell configuration files
+echo "export PATH=\"$CONDA_BASE/bin:\$PATH\"" >> ~/.bash_profile
+echo "export PATH=\"$CONDA_BASE/bin:\$PATH\"" >> ~/.zshrc
+
+# Reload shell configuration
+source ~/.bash_profile
+source ~/.zshrc
+
+# Verify conda installation
+echo "$_prefix Verifying conda installation..."
+which conda
 conda info --base
-[ $? -ne 0 ] && exit_message
 
-hash -r 
-clear -x
+# Initialize conda for the current shell
+
 
 echo "$_prefix Removing defaults channel (due to licensing problems)"
 conda config --remove channels defaults
@@ -102,11 +191,6 @@ echo "$_prefix Ensuring Python version ${_py_version}..."
 conda install python=${_py_version} -y
 [ $? -ne 0 ] && exit_message
 clear -x 
-
-# We will not install the Anaconda GUI
-# There may be license issues due to DTU being
-# a rather big institution. So our installation guides
-# Will be pre-cautious here, and remove the defaults channels.
 
 echo "$_prefix Installing packages..."
 conda install dtumathtools pandas scipy statsmodels uncertainties -y

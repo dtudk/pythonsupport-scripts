@@ -19,7 +19,12 @@ echo "URL used for fetching scripts $url_ps"
 /bin/bash -c "$(curl -fsSL $url_ps/Python/Install.sh)"
 
 # install vscode
-/bin/bash -c "$(curl -fsSL $url_ps/VSC/Install.sh)"
+# If pythoninstallation was successful, install vscode 
+if [ $? -eq 0 ]; then
+  /bin/bash -c "$(curl -fsSL $url_ps/VSC/Install.sh)"
+else
+  echo "Python installation failed. Skipping VSCode installation"
+fi
 
 clear -x
 
