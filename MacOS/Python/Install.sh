@@ -149,6 +149,12 @@ conda init bash
 conda init zsh
 [ $? -ne 0 ] && exit_message
 
+# for CI purposes
+if [ ! -t 0 ]; then
+    echo "Non-interactive mode detected. Initializing conda for xonsh."
+    conda init xonsh
+fi
+
 # need to restart terminal to activate conda
 # restart terminal and continue
 # conda puts its source stuff in the bashrc file
