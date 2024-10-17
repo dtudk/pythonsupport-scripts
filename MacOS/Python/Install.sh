@@ -74,10 +74,8 @@ if conda --version > /dev/null; then
             read -p "Do you want to uninstall it? (yes/no): " confirm
         else
             # Non-interactive mode (piped input)
-            if ! read -t 1 confirm; then
-                echo "Error: No input received in non-interactive mode."
-                exit_message
-            fi
+            echo "Non-interactive mode detected. Proceeding with uninstallation."
+            confirm="yes"
         fi
         confirm=$(echo "$confirm" | tr '[:upper:]' '[:lower:]')
         if [[ "$confirm" != "yes" && "$confirm" != "no" ]]; then
