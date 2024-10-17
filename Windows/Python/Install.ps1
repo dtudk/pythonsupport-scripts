@@ -119,51 +119,51 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.Environ
 
 
 
-    $condaBatPath = "$env:USERPROFILE\Miniconda3\condabin\conda.bat"
+$condaBatPath = "$env:USERPROFILE\Miniconda3\condabin\conda.bat"
 
 
 
-    # Ensuring correct channels are set
-    Write-Output "$_prefix Removing defaults channel (due to licensing problems)"
-    & $condaBatPath config --add channels conda-forge
-    if (-not $?) {
-        Exit-Message
-    }
-    & $condaBatPath config --remove channels defaults
-    if (-not $?) {
-        Exit-Message
-    }
-    & $condaBatPath config --set channel_priority strict
-    if (-not $?) {
-        Exit-Message
-    }
-     # Ensures correct version of python
-
-    if (-not $env:PYTHON_INSTALL_COMMAND_EXECUTED) {
-        & $condaBatPath install python=$env:PYTHON_VERSION_PS -y
-        $env:PYTHON_INSTALL_COMMAND_EXECUTED = "true"
-    } else {
-        Write-Output "Python installation command has already been executed, skipping..."
-    }
-    if (-not $?) {
-        Exit-Message
-    }
-
-   
-   # Install packages
-        
-    Write-Output "$_prefix Installing packages..."
-    & $condaBatPath install dtumathtools pandas scipy statsmodels uncertainties -y
-    if (-not $?) {
-        Exit-Message
-    }
-
-    Write-Output "$_prefix Changing channel priority back to flexible..."
-    & $condaBatPath config --set channel_priority flexible
-    if (-not $?) {
-        Exit-Message
-    }
+# Ensuring correct channels are set
+Write-Output "$_prefix Removing defaults channel (due to licensing problems)"
+& $condaBatPath config --add channels conda-forge
+if (-not $?) {
+    Exit-Message
 }
+& $condaBatPath config --remove channels defaults
+if (-not $?) {
+    Exit-Message
+}
+& $condaBatPath config --set channel_priority strict
+if (-not $?) {
+    Exit-Message
+}
+    # Ensures correct version of python
+
+if (-not $env:PYTHON_INSTALL_COMMAND_EXECUTED) {
+    & $condaBatPath install python=$env:PYTHON_VERSION_PS -y
+    $env:PYTHON_INSTALL_COMMAND_EXECUTED = "true"
+} else {
+    Write-Output "Python installation command has already been executed, skipping..."
+}
+if (-not $?) {
+    Exit-Message
+}
+
+
+# Install packages
+    
+Write-Output "$_prefix Installing packages..."
+& $condaBatPath install dtumathtools pandas scipy statsmodels uncertainties -y
+if (-not $?) {
+    Exit-Message
+}
+
+Write-Output "$_prefix Changing channel priority back to flexible..."
+& $condaBatPath config --set channel_priority flexible
+if (-not $?) {
+    Exit-Message
+}
+
 
 # Ensure version of Python
 Write-Output "Updating Python to version $env:PYTHON_VERSION_PS..."
