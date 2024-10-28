@@ -141,9 +141,9 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
 
     # Attempts to remove defaults channel (due to licensing problems
     & $condaBatPath config --remove channels defaults
-
-
-
+    if (-not $?) {
+       Write-Output "$_prefix Failed to remove defaults channel"
+    }
     & $condaBatPath config --set channel_priority strict
     if (-not $?) {
         Exit-Message
