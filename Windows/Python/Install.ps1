@@ -138,10 +138,12 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     if (-not $?) {
         Exit-Message
     }
+
+    # Attempts to remove defaults channel (due to licensing problems
     & $condaBatPath config --remove channels defaults
-    if (-not $?) {
-        Exit-Message
-    }
+
+
+
     & $condaBatPath config --set channel_priority strict
     if (-not $?) {
         Exit-Message
