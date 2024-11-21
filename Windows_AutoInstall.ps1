@@ -18,10 +18,6 @@ Write-Output "Running Windows_python.ps1"
 PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/Python/Install.ps1' -UseBasicParsing).Content}"
 
 
-Write-Output "Running Windows_VSC.ps1"
-# link to full VSC installation
-PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/VSC/Install.ps1' -UseBasicParsing).Content}"
-
 
 Write-Output ""
 Write-Output "Script has finished. You may now close the terminal..."
