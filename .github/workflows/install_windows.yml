@@ -29,6 +29,7 @@ jobs:
         with:
           auto-activate-base: true
           activate-environment: ""
+          miniconda-version: "latest"
 
       - name: Remove conda (if present)
         if: ${{ !matrix.has-conda }}
