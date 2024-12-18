@@ -10,7 +10,7 @@ if (-not $env:BRANCH_PS) {
 
 $url_ps = "https://raw.githubusercontent.com/$env:REMOTE_PS/$env:BRANCH_PS/Windows"
 
-Write-Output "$_prefix: URL used for fetching scripts $url_ps"
+Write-Output "$_prefix URL used for fetching scripts $url_ps"
 
 PowerShell -ExecutionPolicy Bypass -Command "& {Invoke-Expression (Invoke-WebRequest -Uri '$url_ps/Python/Install.ps1' -UseBasicParsing).Content}"
 $_python_ret = $?
