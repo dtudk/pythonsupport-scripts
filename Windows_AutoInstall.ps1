@@ -35,8 +35,6 @@ if ( -not $_python_ret ) {
   exit $_vsc_ret
 }
 
-# Remove output
-Clear-Host
-
+Write-Output ""
 Write-Output ""
 Write-Output "Script has finished. You may now close the terminal..."

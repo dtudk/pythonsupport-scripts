@@ -39,7 +39,6 @@ elif [ $_vsc_ret -ne 0 ]; then
   exit $_vsc_ret
 fi
 
-clear -x
-
+echo ""
 echo ""
 echo "Script has finished. You may now close the terminal..."
