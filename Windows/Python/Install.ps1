@@ -139,8 +139,11 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     if (-not $?) {
        Write-Output "$_prefix Failed to remove defaults channel"
     }
-    # Forcefully try to always use conda-forge
-    & $condaBatPath config --set channel_priority strict
+    # When new releases are made, we cannot always rely on a strict
+    # channel priority because the base environment has unmet dependencies
+    # for newer Python versions.
+    # So, flexible seems like the only way to go... :(
+    & $condaBatPath config --set channel_priority flexible
     if (-not $?) {
         Exit-Message
     }
@@ -161,12 +164,6 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     # Install packages
     Write-Output "$_prefix Installing packages..."
     & $condaBatPath install dtumathtools pandas scipy statsmodels uncertainties -y
-    if (-not $?) {
-        Exit-Message
-    }
-
-    Write-Output "$_prefix Changing channel priority back to flexible..."
-    & $condaBatPath config --set channel_priority flexible
     if (-not $?) {
         Exit-Message
     }

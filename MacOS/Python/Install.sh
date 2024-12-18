@@ -92,13 +92,16 @@ clear -x
 echo "$_prefix Removing defaults channel (due to licensing problems)"
 conda config --remove channels defaults
 conda config --add channels conda-forge
-# Forcefully try to always use conda-forge
-conda config --set channel_priority strict
+# When new releases are made, we cannot always rely on a strict
+# channel priority because the base environment has unmet dependencies
+# for newer Python versions.
+# So, flexible seems like the only way to go... :(
+conda config --set channel_priority flexible
 
 echo "$_prefix Ensuring Python version ${_py_version}..."
 conda install python=${_py_version} -y
 [ $? -ne 0 ] && exit_message
-clear -x 
+clear -x
 
 # We will not install the Anaconda GUI
 # There may be license issues due to DTU being
@@ -109,12 +112,6 @@ echo "$_prefix Installing packages..."
 conda install dtumathtools pandas scipy statsmodels uncertainties -y
 [ $? -ne 0 ] && exit_message
 clear -x
-
-echo "$_prefix Changing channel priority back to flexible..."
-conda config --set channel_priority flexible
-[ $? -ne 0 ] && exit_message
-clear -x
-
 
 echo ""
 echo "$_prefix Installed conda and related packages for 1st year at DTU!"
