@@ -153,7 +153,6 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     }
 
     # Ensures correct version of python
-    $retval = 0
     if (-not $env:PYTHON_INSTALL_COMMAND_EXECUTED) {
         & $condaBatPath install --strict-channel-priority python=$env:PYTHON_VERSION_PS -y
         $retval = $?
@@ -164,6 +163,7 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
         }
     } else {
         Write-Output "Python installation command has already been executed, skipping..."
+        $retval = 0
     }
     if (-not $retval) {
         Exit-Message

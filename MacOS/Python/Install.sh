@@ -107,7 +107,7 @@ echo "$_prefix Ensuring Python version ${_py_version}..."
 conda install --strict-channel-priority python=${_py_version} -y
 retval=$?
 # If it fails, try the classic solver
-if [ $? -ne 0 ]; then
+if [ $retval -ne 0 ]; then
   conda install --solver classic --strict-channel-priority python=${_py_version} -y
   retval=$?
 fi
