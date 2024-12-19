@@ -110,6 +110,11 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
         Exit-Message
     }
 
+    # Anaconda has this package which tracks usage metrics
+    # We will disable this, and if it fails, so be it.
+    # I.e. we shouldn't check whether it actually succeeds
+    conda config --set anaconda_anon_usage off
+
     # Initialize conda
     Write-Output "$_prefix Initialising conda..."
     conda init
@@ -124,6 +129,12 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     }
 
 
+    # Later, we should check if this is even necessary?
+    # I can see a few problems:
+    # 1. If the user has a previous Conda installation then this will
+    #    explicitly install things in the newly installed version.
+    # 2. If the above happens there may be some inconsistency between
+    #    commands.
     $condaBatPath = "$env:USERPROFILE\Miniconda3\condabin\conda.bat"
 
 
@@ -156,13 +167,14 @@ if ((Test-Path $minicondaPath1) -or (Test-Path $minicondaPath2) -or (Test-Path $
     if (-not $env:PYTHON_INSTALL_COMMAND_EXECUTED) {
         & $condaBatPath install --strict-channel-priority python=$env:PYTHON_VERSION_PS -y
         $retval = $?
+        # If it fails, try to use the flexible way, but manually downgrade libmamba to conda-forge
         if ( -not $retval ) {
-            # If it fails, try the classic solver
-            & $condaBatPath install --solver classic --strict-channel-priority python=$env:PYTHON_VERSION_PS -y
+            Write-Output "$_prefix Trying manual downgrading..."
+            & $condaBatPath install python=$env:PYTHON_VERSION_PS conda-forge::libmamba conda-forge::libmambapy -y
             $retval = $?
         }
     } else {
-        Write-Output "Python installation command has already been executed, skipping..."
+        Write-Output "$_prefix Python installation command has already been executed, skipping..."
         $retval = 0
     }
     if (-not $retval) {

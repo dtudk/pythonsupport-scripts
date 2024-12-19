@@ -76,6 +76,11 @@ conda init bash
 conda init zsh
 [ $? -ne 0 ] && exit_message
 
+# Anaconda has this package which tracks usage metrics
+# We will disable this, and if it fails, so be it.
+# I.e. we shouldn't check whether it actually succeeds
+conda config --set anaconda_anon_usage off
+
 # need to restart terminal to activate conda
 # restart terminal and continue
 # conda puts its source stuff in the bashrc file
@@ -106,9 +111,10 @@ echo "$_prefix Ensuring Python version ${_py_version}..."
 # Doing local strict channel-priority
 conda install --strict-channel-priority python=${_py_version} -y
 retval=$?
-# If it fails, try the classic solver
+# If it fails, try to use the flexible way, but manually downgrade libmamba to conda-forge
 if [ $retval -ne 0 ]; then
-  conda install --solver classic --strict-channel-priority python=${_py_version} -y
+  echo "$_prefix Trying manual downgrading..."
+  conda install python=${_py_version} conda-forge::libmamba conda-forge::libmambapy -y
   retval=$?
 fi
 [ $retval -ne 0 ] && exit_message
