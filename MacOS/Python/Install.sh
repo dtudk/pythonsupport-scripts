@@ -92,14 +92,19 @@ clear -x
 echo "$_prefix Removing defaults channel (due to licensing problems)"
 conda config --remove channels defaults
 conda config --add channels conda-forge
-# When new releases are made, we cannot always rely on a strict
-# channel priority because the base environment has unmet dependencies
-# for newer Python versions.
-# So, flexible seems like the only way to go... :(
+
+# Sadly, there can be a deadlock here
+# When channel_priority == strict
+# newer versions of conda will sometimes be unable to downgrade.
+# However, when channel_priority == flexible
+# it will sometimes not revert the libmamba suite which breaks
+# the following conda install commands.
+# Hmmm.... :(
 conda config --set channel_priority flexible
 
 echo "$_prefix Ensuring Python version ${_py_version}..."
-conda install python=${_py_version} -y
+# Doing local strict channel-priority
+conda install --strict-channel-priority python=${_py_version} -y
 [ $? -ne 0 ] && exit_message
 clear -x
 
