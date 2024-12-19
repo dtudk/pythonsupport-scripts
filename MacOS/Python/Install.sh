@@ -105,7 +105,13 @@ conda config --set channel_priority flexible
 echo "$_prefix Ensuring Python version ${_py_version}..."
 # Doing local strict channel-priority
 conda install --strict-channel-priority python=${_py_version} -y
-[ $? -ne 0 ] && exit_message
+retval=$?
+# If it fails, try the classic solver
+if [ $? -ne 0 ]; then
+  conda install --solver classic --strict-channel-priority python=${_py_version} -y
+  retval=$?
+fi
+[ $retval -ne 0 ] && exit_message
 clear -x
 
 # We will not install the Anaconda GUI
