@@ -45,6 +45,7 @@ if [ 0 -eq 1 ]; then
   if curl -fsSL "https://raw.githubusercontent.com/${REMOTE_PS}/${BRANCH_PS}/MacOS/Components/Shared/piwik_utility.sh" -o /tmp/piwik_utility.sh 2>/dev/null && source /tmp/piwik_utility.sh 2>/dev/null; then
       echo "Analytics loaded successfully"
       ANALYTICS_ENABLED=true
+  fi
 fi
 
 echo "DTU Python Support - macOS Installer"
