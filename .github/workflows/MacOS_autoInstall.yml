@@ -89,7 +89,7 @@ jobs:
           if [ -n "${{ matrix.input }}" ]; then
             printf "%s\n" "${{ matrix.input }}" | curl -fsSL "https://raw.githubusercontent.com/$REMOTE_PS/$BRANCH_PS/MacOS/releases/dtu-python-installer-macos.sh" | bash -s -- --cli
           else
-            yes | curl -fsSL "https://raw.githubusercontent.com/$REMOTE_PS/$BRANCH_PS/MacOS/releases/dtu-python-installer-macos.sh" | bash -s -- --cli
+            curl -fsSL "https://raw.githubusercontent.com/$REMOTE_PS/$BRANCH_PS/MacOS/releases/dtu-python-installer-macos.sh" | bash -s -- --cli
           fi
 
       - name: Verify Installation - Conda
