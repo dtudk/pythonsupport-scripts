@@ -166,7 +166,7 @@ if [ "$CONDA_FOUND" = true ]; then
         for pass in {1..4}; do
             echo "Pass $pass of 4: Checking for remaining conda installations..."
             
-            env -i "HOME=$HOME" bash -l /tmp/uninstall_conda.sh
+            env -i "HOME=$HOME" bash /tmp/uninstall_conda.sh
             
             if [ $? -eq 0 ]; then
                 echo "Pass $pass completed successfully"
