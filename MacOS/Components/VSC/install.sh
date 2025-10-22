@@ -182,9 +182,9 @@ echo "Installing VS Code extensions..."
 
 # Define extensions to install
 extensions=(
-  "ms-python.python"
-  "ms-toolsai.jupyter"
-  #"tomoki1207.pdf"
+    "ms-python.python"
+    "ms-toolsai.jupyter" 
+    "tomoki1207.pdf"
 )
 
 # Install extensions one by one with error handling
