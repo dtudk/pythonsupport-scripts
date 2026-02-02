@@ -139,19 +139,22 @@ run_first_year_test() {
     
     # Test 5: VS Code Extensions
     echo "Testing VS Code Extensions..."
-    if code --list-extensions 2>/dev/null | grep -q "ms-python.python"; then
-        echo "PASS: Python extension installed"
-        if code --list-extensions 2>/dev/null | grep -q "ms-toolsai.jupyter"; then
-            echo "PASS: Jupyter extension installed"  
+    if [ "$vscode_failed" = false ]; then
+        if code --list-extensions 2>/dev/null | grep -q "ms-python.python"; then
+            echo "PASS: Python extension installed"
+            if code --list-extensions 2>/dev/null | grep -q "ms-toolsai.jupyter"; then
+                echo "PASS: Jupyter extension installed"  
+            else
+                echo "FAIL: Jupyter extension missing"
+                extensions_failed=true
+            fi
         else
-            echo "FAIL: Jupyter extension missing"
+            echo "FAIL: Python extension missing"
             extensions_failed=true
         fi
     else
-        echo "FAIL: Python extension missing"
-        extensions_failed=true
+        echo "SKIP: VS Code not available for extension testing"
     fi
-    
     echo ""
     
     # Test 6: Conda Base Environment Activation

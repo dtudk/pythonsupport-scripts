@@ -281,7 +281,7 @@ function Test-FirstYearSetup {
             $failCount++
         }
     } else {
-        Write-Output "FAIL: VS Code not available for extension testing"
+        Write-Output "SKIP: VS Code not available for extension testing"
     }
     Write-Output ""
     
