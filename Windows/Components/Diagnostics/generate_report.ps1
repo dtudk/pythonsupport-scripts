@@ -178,6 +178,7 @@ function Test-FirstYearSetup {
     Write-Output ""
     
     $failCount = 0
+    $vsCodeWorks = false
     
     # Test 1: Miniforge Installation
     Write-Output "Testing Miniforge Installation..."
@@ -251,6 +252,7 @@ function Test-FirstYearSetup {
         $codeTest = & $SystemInfo.VSCodePath --version 2>$null
         if ($LASTEXITCODE -eq 0) {
             Write-Output "PASS: VS Code $($codeTest | Select-Object -First 1)"
+            $vsCodeWorks = true
         } else {
             Write-Output "FAIL: VS Code not available"
             $failCount++
@@ -263,7 +265,7 @@ function Test-FirstYearSetup {
     
     # Test 5: VS Code Extensions
     Write-Output "Testing VS Code Extensions..."
-    if ($SystemInfo.VSCodePath) {
+    if ($SystemInfo.VSCodePath -and $vsCodeWorks) {
         $pythonExtension = & $SystemInfo.VSCodePath --list-extensions 2>$null | Where-Object { $_ -eq "ms-python.python" }
         if ($pythonExtension) {
             Write-Output "PASS: Python extension installed"
@@ -280,7 +282,6 @@ function Test-FirstYearSetup {
         }
     } else {
         Write-Output "FAIL: VS Code not available for extension testing"
-        $failCount++
     }
     Write-Output ""
     
