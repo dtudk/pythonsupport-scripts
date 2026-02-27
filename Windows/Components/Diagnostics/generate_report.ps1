@@ -22,6 +22,9 @@ function Refresh-Environment {
         "$env:USERPROFILE\miniforge3",
         "$env:USERPROFILE\miniforge3\Scripts",
         "$env:USERPROFILE\miniforge3\Library\bin",
+        "C:\DTUApps\miniforge3",
+        "C:\DTUApps\miniforge3\Scripts",
+        "C:\DTUApps\miniforge3\Library\bin",
         "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin",
         "${env:ProgramFiles}\Microsoft VS Code\bin",
         "${env:ProgramFiles(x86)}\Microsoft VS Code\bin"
@@ -50,7 +53,7 @@ function Get-SystemInfo {
     $pythonVersion = $null
     
     # First try to find conda Python specifically
-    $condaPythonPath = "$env:USERPROFILE\miniforge3\python.exe"
+    $condaPythonPath = "C:\DTUApps\miniforge3\python.exe"
     if (Test-Path $condaPythonPath) {
         Write-Host "    Found conda Python at: $condaPythonPath" -ForegroundColor Gray
         $pythonPath = $condaPythonPath
@@ -181,7 +184,7 @@ function Test-FirstYearSetup {
     
     # Test 1: Miniforge Installation
     Write-Output "Testing Miniforge Installation..."
-    $miniforgePath = "$env:USERPROFILE\miniforge3"
+    $miniforgePath = "C:\DTUApps\miniforge3"
     if ((Test-Path $miniforgePath) -and ($SystemInfo.CondaPath)) {
         Write-Output "PASS: Miniforge installed at $miniforgePath"
     } else {
@@ -212,8 +215,8 @@ function Test-FirstYearSetup {
     Write-Output "Testing DTU Packages..."
     
     # Try to use conda Python with environment activation
-    $condaPythonPath = "$env:USERPROFILE\miniforge3\python.exe"
-    $condaScriptsPath = "$env:USERPROFILE\miniforge3\Scripts"
+    $condaPythonPath = "C:\DTUApps\miniforge3\python.exe"
+    $condaScriptsPath = "C:\DTUApps\miniforge3\Scripts"
     
     if (Test-Path $condaPythonPath) {
         # Use conda Python directly
