@@ -41,7 +41,8 @@ $possibleCondaPaths = @(
     "$env:USERPROFILE\anaconda3",
     "$env:ProgramData\miniforge3",
     "$env:ProgramData\miniconda3",
-    "$env:ProgramData\anaconda3"
+    "$env:ProgramData\anaconda3",
+    "C:\DTUApps\miniforge3"
 )
 
 foreach ($path in $possibleCondaPaths) {

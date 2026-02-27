@@ -22,7 +22,8 @@ $condaPaths = @(
     "$env:USERPROFILE\anaconda3\Scripts\conda.exe",
     "$env:ProgramData\miniforge3\Scripts\conda.exe",
     "$env:ProgramData\miniconda3\Scripts\conda.exe",
-    "$env:ProgramData\anaconda3\Scripts\conda.exe"
+    "$env:ProgramData\anaconda3\Scripts\conda.exe",
+    "C:\DTUApps\miniforge3\Scripts\conda.exe"
 )
 
 $condaFound = $false
@@ -93,9 +94,9 @@ if (-not $condaFound) {
     # Install Miniforge silently
     Write-Host "Installing Miniforge..."
     Write-Host "Installer path: $installerPath"
-    Write-Host "Installation directory: $env:USERPROFILE\miniforge3"
+    Write-Host "Installation directory: C:\DTUApps\miniforge3"
     try {
-        $process = Start-Process -FilePath $installerPath -ArgumentList "/S /D=$env:USERPROFILE\miniforge3" -Wait -PassThru
+        $process = Start-Process -FilePath $installerPath -ArgumentList "/S /D=C:\DTUApps\miniforge3" -Wait -PassThru
         if ($process.ExitCode -ne 0) {
             Write-Host "Miniforge installation failed with exit code: $($process.ExitCode)"
             throw "Miniforge installation failed"
@@ -113,7 +114,7 @@ if (-not $condaFound) {
     }
     
     # Add Miniforge to PATH
-    $miniforgePath = "$env:USERPROFILE\miniforge3\Scripts"
+    $miniforgePath = "C:\DTUApps\miniforge3\Scripts"
     $currentPath = [Environment]::GetEnvironmentVariable("PATH", "User")
     if ($currentPath -notlike "*$miniforgePath*") {
         $newPath = "$currentPath;$miniforgePath"
