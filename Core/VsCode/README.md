@@ -1,7 +1,6 @@
 # Install Extensions 
-- Python  
-- Jupyter 
 
+For now the same extensions as in the OG install script (python, jupyter, etc.).
 
 # Application of default settings for VsCode 
 
