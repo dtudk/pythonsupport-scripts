@@ -1,0 +1,6 @@
+{
+    "chat.commandCenter.enabled": false,
+    "github.copilot.enable": false,
+    "telemetry.telemetryLevel": "off",
+    "python.locator": "js"
+}
