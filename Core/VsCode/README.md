@@ -8,4 +8,5 @@ For now the same extensions as in the OG install script (python, jupyter, etc.).
 
 - Disable AI-features
 - Set Python Locator to JS
+- Disable telemetry
 - TODO: Default Kernel/Python to miniforge (base)
