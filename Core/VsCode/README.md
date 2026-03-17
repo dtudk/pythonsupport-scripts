@@ -1,12 +1,24 @@
-# Install Extensions 
+# VS Code
 
-For now the same extensions as in the OG install script (python, jupyter, etc.).
+## Install (macOS)
 
-# Application of default settings for VsCode 
+Installs VS Code, applies default settings, and installs extensions.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/main/Core/VsCode/install/install_macOS.sh | bash
+```
+
+## Uninstall (macOS)
+
+Removes VS Code, settings, extensions, and user data.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/main/Utils/VsCode/uninstall_macOS.sh | bash
+```
 
 ## Default settings
 
-- Disable AI-features
-- Set Python Locator to JS
+- Disable AI features
+- Disable chat agent
+- Set Python locator to JS
 - Disable telemetry
-- TODO: Default Kernel/Python to miniforge (base)
