@@ -1,6 +1,6 @@
 {
-    "chat.commandCenter.enabled": false,
-    "github.copilot.enable": false,
+    "chat.disableAIFeatures": true,
+    "chat.agent.enabled": false,
     "telemetry.telemetryLevel": "off",
     "python.locator": "js"
 }
