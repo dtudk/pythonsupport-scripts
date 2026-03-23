@@ -2,7 +2,7 @@
 # @name: VS Code Settings (windows)
 # @description: Apply default VS Code settings
 # @category: Core
-# @usage: .\Core\VsCode\config\settings_windows.ps1
+# @usage: . .\Core\VsCode\config\settings_windows.ps1
 # @requirements: windows, VS Code installed
 # @notes: Copies default_settings_Windows.json to the VS Code user settings location
 # @/doc
