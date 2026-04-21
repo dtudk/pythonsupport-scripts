@@ -1,5 +1,7 @@
 # VS Code
 
+Change folder name to VSCode to be consistent with application preference
+
 ## Install (macOS)
 
 Installs VS Code, applies default settings, and installs extensions.
@@ -18,6 +20,7 @@ curl -fsSL https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/main/Ut
 
 ## Default settings
 
+- add which extensions we are adding
 - Disable AI features
 - Disable chat agent
 - Set Python locator to JS

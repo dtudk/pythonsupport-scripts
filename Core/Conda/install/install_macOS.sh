@@ -6,8 +6,11 @@
 # @usage: bash Core/Conda/install/install_macOS.sh
 # @requirements: macOS, curl
 # @notes: Downloads the latest Miniforge installer and runs it in batch mode
+# Also document any env-variables that are important for this script.
+# I.e. which env-vars can be overwritten?
 # @/doc
 
+# Clarify to new-comers what these do, perhaps especially -e
 set -euo pipefail
 
 BASE_URL="https://github.com/philipnickel/miniforge-PIS/releases/latest/download"
@@ -25,6 +28,8 @@ if [ -d "$INSTALL_DIR" ] && [ -x "$INSTALL_DIR/bin/conda" ]; then
 else
     # Download
     TMPDIR_PATH="$(mktemp -d)"
+    # This will fail, why? ;)
+    # Likely we should also add SIGKILL, SIGINT
     trap 'rm -rf "$TMPDIR_PATH"' EXIT
 
     echo "  Downloading ${INSTALLER_NAME}..."
@@ -33,12 +38,14 @@ else
 
     # Run installer in batch mode (no prompts, no PATH modification)
     echo "  Running installer..."
+    # To aid new-comers to miniforge, please elaborate what -buc does :)
     bash "$TMPDIR_PATH/${INSTALLER_NAME}" -buc -p "$INSTALL_DIR"
     echo "  [OK] Miniforge installed to $INSTALL_DIR"
 fi
 
 # Load conda shell functions and activate the base environment
 echo "  Initializing conda..."
+# use explicit source, it clarifies intent
 . "${INSTALL_DIR}/etc/profile.d/conda.sh" && conda activate "${INSTALL_DIR}"
 
 # Initialize conda for all supported shells on this machine

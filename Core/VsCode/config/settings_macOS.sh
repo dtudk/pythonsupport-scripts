@@ -17,6 +17,12 @@ echo "=== Applying VS Code Settings ==="
 echo ""
 
 mkdir -p "$SETTINGS_DIR"
+# This is not good, you are overwriting the settings file, which might
+# not be ideal
+# This is something we should think about how to accomplish most easily.
+# We don't want to overwrite users settings...
+# I don't know what's the best solution here, perhaps create a venv, 
+# and then merge the two jsons...?
 curl -fsSL "$REPO_BASE_URL/Core/VsCode/config/default_settings_MacOS.json" > "$SETTINGS_FILE"
 echo "  [OK] Settings applied to $SETTINGS_FILE"
 

@@ -10,6 +10,8 @@
 
 set -euo pipefail
 
+# Will it always be here?
+# Could one do which code in case it does not exist? Is that too aggressive
 CODE_CLI="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 
 echo "=== Installing VS Code Extensions ==="

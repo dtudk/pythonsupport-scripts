@@ -1,5 +1,10 @@
 # Conda (Miniforge)
 
+
+Do we really need a folder for install?
+The file is already prefixed with `install_*`, we would also have a `uninstall_*`?
+
+
 ## Install (macOS)
 
 ```bash

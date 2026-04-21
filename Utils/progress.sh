@@ -39,6 +39,8 @@ progress() {
         printf '  \033[1m[%c] %s\033[0m\n' "${spin:i++%${#spin}:1}" "$msg" >&4
         printf '      %s\n' \
             "Please do not interrupt this script - it may take up to $mins minutes." >&4
+        # Bump up sleep, this is too frequent, 0.2-0.4 should be fine, no need to
+        # put unneeded stress on CPU's
         sleep 0.1
     done
 

@@ -6,6 +6,7 @@
 # @usage: bash Core/Orchestration/install_all_macOS.sh
 # @requirements: macOS, curl, unzip
 # @notes: Runs all installation steps in order: Miniforge, VS Code (with extensions and settings)
+# @envs: should we also prefix all with PS_?
 # @/doc
 
 set -euo pipefail
